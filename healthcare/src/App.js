@@ -14,13 +14,26 @@ Doctor -> (does) -> Test -> (for) -> Patient
 */
 
 import React, { Component } from 'react';
+import Frontview from './Components/Frontview';
 import './App.css';
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      projects: 
+        {
+          title: 'Business Website',
+          category: 'Web Design'
+        }
+      
+    } 
+  }
   render() {
     return (
       <div className="App">
-        Hello World
+        <Frontview />
+        {this.state.projects.title}
       </div>
     );
   }
