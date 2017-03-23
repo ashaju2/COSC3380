@@ -22,18 +22,19 @@ connection.query(sql,['Matthew'],function(err,result){
 });
  connection.query('INSERT INTO DOCTOR (Fname,Minit,Lname,Address,NPI,StateLicenseNumber,StateOfLicense,Specialty,PrimaryPhysician,Phone) VALUES(?,?,?,?,?,?,?,?,?,?)',['Matthew','M','Rodriguez','123 Fake Street','717835421','123456789','TX','Gastroenterologist','9999','123987654'],function(err, result){
 	 if(err) throw err;
-	console.log('Inserted data \n');
-	//console.log(result[0].Fname);
-     //console.log(result[0].Minit);
-        //console.log(result[0].Lname);
-		//console.log(result[0].Address);
-        //console.log(result[0].NPI);
-        //console.log(result[0].StateLicenseNumber);
-        //console.log(result[0].StateOfLicense);
-		//console.log(result[0].Specialty);
-        //console.log(result[0].PrimaryPhysician);
-        //console.log(result[0].Phone);
-        console.log(result);
+ console.log('Inserted data \n');
+	connection.query('SELECT * FROM DOCTOR',function(err,results){ //reading back data that i inserted 
+	    console.log(results[0].Fname);
+        console.log(results[0].Minit);
+        console.log(results[0].Lname);
+		console.log(results[0].Address);
+        console.log(results[0].NPI);
+        console.log(results[0].StateLicenseNumber);
+        console.log(results[0].StateOfLicense);
+		console.log(results[0].Specialty);
+        console.log(results[0].PrimaryPhysician);
+        console.log(results[0].Phone);
+        
 	
 	
-});
+ })});
