@@ -1,7 +1,6 @@
 var mysql = require('mysql');
 var express= require('express');
 var app = express();
-//var React =require('react');
 
 var connection = mysql.createConnection({
   host     : 'cosc3380.cxynx1tgvjja.us-west-2.rds.amazonaws.com',
@@ -20,6 +19,15 @@ connection.connect(function(err) {
 app.get('/',function(request,response){
 	var html='<h1>Hello World<h1>';
 	response.send(html);
+});
+
+var sql="DELETE FROM DOCTOR WHERE Fname = ?"
+connection.query(sql,['Alen'],function(err,result){
+	
+	if(err)throw err;
+	console.log('Data deleted \n');
+	console.log(result);
+	
 });
 
 var sql="DELETE FROM DOCTOR WHERE Fname = ?"
