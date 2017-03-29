@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from './Login.js';
 import './Frontview.css';
 
 class Frontview extends Component {
@@ -38,8 +39,9 @@ class Frontview extends Component {
                 <h1>Health-Care System</h1>
             </div>
         </div>
-          
-        
+
+         {this.props.projects.title} 
+        <Login projectx={this.props.projects}/>
     </div>
     );
   }

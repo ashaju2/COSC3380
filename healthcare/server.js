@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var express= require('express');
-var app=express();
+var app = express();
 //var React =require('react');
 
 var connection = mysql.createConnection({
@@ -16,10 +16,12 @@ connection.connect(function(err) {
   if (err) return console.log(err);
   console.log('Connected to RDS!');
 });
+
 app.get('/',function(request,response){
 	var html='<h1>Hello World<h1>';
 	response.send(html);
 });
+
 var sql="DELETE FROM DOCTOR WHERE Fname = ?"
 connection.query(sql,['Matthew'],function(err,result){
 	
@@ -28,7 +30,7 @@ connection.query(sql,['Matthew'],function(err,result){
 	console.log(result);
 	
 });
-app.post()
+//app.post()
 connection.query('INSERT INTO DOCTOR (Fname,Minit,Lname,Address,NPI,StateLicenseNumber,StateOfLicense,Specialty,PrimaryPhysician,Phone) VALUES(?,?,?,?,?,?,?,?,?,?)',['Matthew','M','Rodriguez','123 Fake Street','717835421','123456789','TX','Gastroenterologist','9999','123987654'],function(err, result){
 	 if(err) throw err;
  console.log('Inserted data \n');
