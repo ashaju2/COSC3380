@@ -4,6 +4,7 @@
 3 - at least 1 or 2 triggers some type of checks - ❌
 4 - Queries and reports - ❌      
 5 - Connect nodejs in RDS to react - ✔️
+6 - Routing to different page - ❌
 
 Database:
 Doctor -> (Assigns) -> Prescription -> (for) -> patients

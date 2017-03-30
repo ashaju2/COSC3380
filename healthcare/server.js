@@ -1,6 +1,28 @@
+require('babel-register')({
+    presets:['react']
+});
 var mysql = require('mysql');
 var express= require('express');
 var app = express();
+var jsx = require('node-jsx');
+var React = require('react');
+var ReactDOMServer = require('react-dom/server');
+var Component = require('./src/index.js');
+
+jsx.install();
+
+app.get('/',function(request,response){
+	var html = ReactDOMServer.renderToString(
+        React.createElement(Component)
+    );
+	response.send(html);
+});
+
+var PORT = 3001;
+app.listen(PORT, function(){
+    console.log('http://localhost:' + PORT);
+});
+
 
 var connection = mysql.createConnection({
   host     : 'cosc3380.cxynx1tgvjja.us-west-2.rds.amazonaws.com',
@@ -16,10 +38,7 @@ connection.connect(function(err) {
   console.log('Connected to RDS!');
 });
 
-app.get('/',function(request,response){
-	var html='<h1>Hello World<h1>';
-	response.send(html);
-});
+
 
 var sql="DELETE FROM DOCTOR WHERE Fname = ?"
 connection.query(sql,['Alen'],function(err,result){
