@@ -1,28 +1,17 @@
-require('babel-register')({
-    presets:['react']
-});
+var express = require('express')
 var mysql = require('mysql');
-var express= require('express');
-var app = express();
-var jsx = require('node-jsx');
-var React = require('react');
-var ReactDOMServer = require('react-dom/server');
-var Component = require('./src/index.js');
+var path = require('path');
+var app = express()
 
-jsx.install();
+app.use(express.static('./client/build'));
 
-app.get('/',function(request,response){
-	var html = ReactDOMServer.renderToString(
-        React.createElement(Component)
-    );
-	response.send(html);
-});
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, './client/build', 'index.html'));
+})
 
-var PORT = 3001;
-app.listen(PORT, function(){
-    console.log('http://localhost:' + PORT);
-});
-
+app.listen(3001, function () {
+  console.log('Example app listening on port 3000!')
+})
 
 var connection = mysql.createConnection({
   host     : 'cosc3380.cxynx1tgvjja.us-west-2.rds.amazonaws.com',

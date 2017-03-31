@@ -4,7 +4,7 @@
 3 - at least 1 or 2 triggers some type of checks - ❌
 4 - Queries and reports - ❌      
 5 - Connect nodejs in RDS to react - ✔️
-6 - Routing to different page - ❌
+6 - Routing to different page - ✔️
 
 Database:
 Doctor -> (Assigns) -> Prescription -> (for) -> patients
@@ -36,6 +36,17 @@ class App extends Component {
       <div className="App">
         <Frontview projects={this.state.projects}/>
         {this.state.projects.title}
+        <form>
+          <div className="form-group">
+          <label for="usr">Name:</label>
+          <input type="text" class="form-control" id="usr" />
+        </div>
+        <div className="form-group">
+          <label for="pwd">Password:</label>
+          <input type="password" class="form-control" id="pwd"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
     );
   }

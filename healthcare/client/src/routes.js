@@ -10,6 +10,9 @@ const Routes = props => {
       <div>
         <Route exact path="/" component={App} />
         <Route path="/Login" component={Login} />
+        <ul role="nav">
+          <li><Link to="/Login">Login</Link></li>
+        </ul>
       </div>
     </Router>
 )}
