@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import Login from './Login.js';
 import './Frontview.css';
 
 class Frontview extends Component {
+  constructor(){
+    super();
+  }
+  
   render() {
     return (
       <div className="Frontview">
@@ -40,8 +43,6 @@ class Frontview extends Component {
             </div>
         </div>
 
-         {this.props.projects.title} 
-        <Login projectx={this.props.projects}/>
     </div>
     );
   }
