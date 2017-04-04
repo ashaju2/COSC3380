@@ -24,29 +24,12 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      user: [{
-        username: '',
-        password: '',
-       }],
-      username: '',
-      password: '',
+      user: [],
       
     };
-    this.onSubmit = this.handleSubmit.bind(this); 
-  }
-  handleSubmit(e) {
-    e.preventDefault();
-    // On submit of the form, send a POST request with the data to the server.
-    
   }
 
   handleLogin(login){
-    // let user = this.state.user;
-    // user.push(login);
-    // this.setState({user: user});
-    this.setState({username: login.username});
-    this.setState({password: login.password});
-
     fetch('/', { 
         method: 'POST',
         headers: {
@@ -54,32 +37,16 @@ class App extends Component {
         'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          username: this.state.username,
-          password: this.state.password
+          username: login.username,
+          password: login.password
         })
       })
   }
 
   render() {
-    console.log(this.state.username);
     return (
       <div className="App">
         <Frontview />
-        <form onSubmit={this.onSubmit}>
-          <input 
-            type="text" 
-            placeholder="Name" 
-            ref="name" 
-            onChange={(e) => this.setState({ name: e.target.value})}
-          />
-          <input 
-            type="text" 
-            placeholder="Job" 
-            ref="job"
-            onChange={(e) => this.setState({ job: e.target.value })}
-          />
-          <input type="submit" />
-        </form>
         <Login login={this.handleLogin.bind(this)}/>
         {this.state.username}
 
