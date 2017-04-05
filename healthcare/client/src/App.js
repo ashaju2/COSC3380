@@ -1,5 +1,5 @@
 /* Goals:
-1 - User authentication for multiple roles|register - ❌(Jason)
+1 - User authentication for multiple roles|register - ✔️
 2 - data entry capabilities. Each role log in and enter, need web forms - 
 3 - at least 1 or 2 triggers some type of checks - ❌
 4 - Queries and reports - ❌      
@@ -25,7 +25,7 @@ class App extends Component {
     super();
     this.state = {
       user: [],
-      
+      loginAccept: 'false'
     };
   }
 
@@ -40,16 +40,27 @@ class App extends Component {
           username: login.username,
           password: login.password
         })
+      }).then(function(response) {
+        return response.json()
+      }).then(function(responseJson){
+        console.log(responseJson);
+        if(responseJson === 1){
+          //this.setState({loginAccept: 'true'})
+          console.log(responseJson);
+        }
       })
+      console.log(this.state.loginAccept);
   }
+
+componentWillMount(){
+  
+}
 
   render() {
     return (
       <div className="App">
         <Frontview />
         <Login login={this.handleLogin.bind(this)}/>
-        {this.state.username}
-
       </div>
     );
   }

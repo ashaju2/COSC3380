@@ -22,7 +22,7 @@ var connection = mysql.createConnection({
   user     : 'apshaju',
   password : '12345678',
   port     : '3306',
-  database : 'cosc3380',
+  database : 'CLINIC',
   //debug: true
 });
 
@@ -36,42 +36,25 @@ app.post('/', function(req, res) {
     console.log('I have posted');
   // Get sent data.
   var user = req.param('username');
-  var job = req.param('password');
+  var password = req.param('password');
   // Do a MySQL query.
-  console.log('My name is: ' + user + ' and my job is: ' + job);
+  console.log('My name is: ' + user + ' and my job is: ' + password);
   
-
-
-    // var sql="DELETE FROM DOCTOR WHERE Fname = ?"
-    // connection.query(sql,[user],function(err,result){
-        
-    //     if(err)throw err;
-    //     console.log('Data deleted \n');
-    //     console.log(result);
-        
-    // });
-
-    //app.post()
-    // connection.query('INSERT INTO DOCTOR (Fname,Minit,Lname,Address,NPI,StateLicenseNumber,StateOfLicense,Specialty,PrimaryPhysician,Phone,username) VALUES(?,?,?,?,?,?,?,?,?,?)',['Alen','M','Rodriguez','123 Fake Street','717835421','123456789','TX','Gastroenterologist','9999','123987654',user],function(err, result){
-    //     if(err) throw err;
-    // console.log('Inserted data \n');
-     connection.query('SELECT DOCTOR.* FROM DOCTOR where DOCTOR.username = ?',[user],function(err,results){ //reading back data that i inserted 
-            console.log(results[0].Fname);
-            console.log(results[0].Minit);
-            console.log(results[0].Lname);
-            console.log(results[0].Address);
-            console.log(results[0].NPI);
-            console.log(results[0].StateLicenseNumber);
-            console.log(results[0].StateOfLicense);
-            console.log(results[0].Specialty);
-            console.log(results[0].PrimaryPhysician);
-            console.log(results[0].Phone);
-            
-        
-        
-    //})
+  var loginSuccessful = 0;
+  connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, fields){ //Does username exist already
+      loginSuccessful = rows[0][0].loginSuccess;
+      console.log(loginSuccessful);
+       res.json(loginSuccessful);
+    });
+    console.log(loginSuccessful);
+    connection.query('SELECT DOCTOR.* FROM DOCTOR where DOCTOR.username = ?',[user],function(err,results){ //reading back data that i inserted 
+          console.log(results[0].Fname);
+          console.log(results[0].Minit);
+          console.log(results[0].Lname);
+          console.log(results[0].Address);
+          console.log(results[0].Specialty);
+          console.log(results[0].Phone);
 });
 
 
- res.json(user);
 });

@@ -7,6 +7,8 @@ class Login extends Component {
       login: {}
     };
   }
+
+  
   handleSubmit(e) {
     if(this.refs.username.value){
       this.setState({login: {
