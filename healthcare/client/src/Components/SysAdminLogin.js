@@ -4,7 +4,7 @@ class SysAdminLogin extends Component {
   render() {
     return (
       <div className="SysAdminLogin">
-        
+        <p>yolo</p>
       </div>
     );
   }

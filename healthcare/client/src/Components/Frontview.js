@@ -3,7 +3,10 @@ import './Frontview.css';
 import DocLogin from './DocLogin.js';
 import PatientLogin from './PatientLogin.js';
 import SysAdminLogin from './SysAdminLogin.js';
-
+import { Link } from 'react-router-dom';
+import about from './NavBarComponents/about';
+import contacts from './NavBarComponents/contacts';
+import data from '../data';
 
 class Frontview extends Component {
   constructor(){
@@ -36,19 +39,24 @@ class Frontview extends Component {
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
               <ul className="nav navbar-nav">
-                <li><a className="active" href="#home">Home</a></li>
-                <li><a href="#news">News</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#about">About</a></li>
+                <li><Link className="active" to="/">Home</Link></li>
+                <li><Link to="/contacts">Contact</Link></li>
+                <li><Link to="/about">About</Link></li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
                 <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <div className="dropdown">
-                <li><button className="glyphicon glyphicon-log-in dropbtn"> Login</button></li>
+                {!data.doctorLoggedIn && 
+                    (<li><button className="glyphicon glyphicon-log-in dropbtn"> Login</button></li>)
+                }
+                {data.doctorLoggedIn && 
+                    (<li><button className="glyphicon glyphicon-log-in dropbtn danger"> Sign Out</button></li>)
+                }
                     <div className="dropdown-content">
-                        <a onClick={(e) => this.OpenDocSignin()}>Doctor</a>
-                        <a onClick={(e) => this.OpenPatSignin()}>Patient</a>
-                        <a onClick={(e) => this.OpenAdminSignin()}>System-Admin</a>
+                        <Link to="/DocLogin">Doctor</Link>
+                        <Link to="/PatientLogin">Patient</Link>
+                        <Link to="/SysAdminLogin">System-Admin</Link>
+                        
                     </div>
                 </div>
             </ul>
