@@ -25,31 +25,15 @@ class App extends Component {
     super();
     this.state = {
       user: [],
-      data: null
+      loginAccept: 'false'
     };
   }
   
-  componentDidMount() {
-    this.getReddit()
-  }
-  getReddit = () => {
-    fetch('https://www.reddit.com/r/scarystories/.json')
-    .then((response) => {
-      this.setState({data: 'I have loaded data'})
-    })
-    
-  }
+
   render() {
-    if (!this.state.data) {
-      return (
-        <div>
-          <p><b>Loading...</b></p>
-        </div>
-      )
-    }
     return (
       <div className="App">
-        <p>{this.state.data}</p>
+        <Frontview />
       </div>
     );
   }
