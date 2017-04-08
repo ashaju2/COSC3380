@@ -50,7 +50,9 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
   if (loginSuccessful === 1){ 
     console.log("login successful"); }
   else {
-    console.log("login unsuccessful");}
+    console.log("login unsuccessful");
+    res.json(userTypeInt);
+}
   if(loginSuccessful === 1)
   {
     connection.query('CALL CLINIC.getUserType( ? )', [user], function(err, rows){
@@ -85,4 +87,28 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
     //       console.log(results[0].Specialty);
     //       console.log(results[0].Phone);
     // });
+  });
+
+  app.post('/report', function(req, res) {
+    console.log('I have new posted');
+  // Get sent data.
+  var firstName = req.param('firstName');
+  var lastName = req.param('lastName');
+  var patientID = req.param('patientID');
+  // Do a MySQL query.
+  console.log('Patient First name is: ' + firstName + ' and Last Name  is: ' + lastName + 'patientID is' + patientID);
+
+  connection.query('SELECT PATIENT.* FROM PATIENT where PATIENT.PatientID = ?',[patientID],function(err,results){ //reading back data that i inserted 
+        console.log(results[0].PatientID);
+        console.log(results[0].Fname);
+        console.log(results[0].Minit);
+        console.log(results[0].Lname);
+        console.log(results[0].DateOfBirth);
+        console.log(results[0].Allergies);
+        console.log(results[0].Conditions);
+        console.log(results[0].Gender);
+        
+        res.json(results[0]);
+  });
+
   });

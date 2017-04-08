@@ -11,6 +11,7 @@ import about from './Components/NavBarComponents/about'
 import contacts from './Components/NavBarComponents/contacts'
 import DocLogin from './Components/DocLogin'
 import PatientLogin from './Components/PatientLogin';
+import reports from './Components/Doctor/reports';
 
 const Routes = props => {
     return(
@@ -24,6 +25,7 @@ const Routes = props => {
         <Route path="/DocLogin" component={DocLogin} /> 
         <Route path="/PatientLogin" component={PatientLogin} /> 
         <Route path="/Patient" component={Patient} /> 
+        <Route path="/reports" component={reports} /> 
         
       </div>
     </Router>

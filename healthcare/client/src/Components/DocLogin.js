@@ -52,6 +52,9 @@ class DocLogin extends Component {
 //        push('/SysAdmin');
         console.log(responseJson);
       }
+      else{
+        console.log("Wrong username or password");
+      }
 
         })
       });

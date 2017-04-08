@@ -18,7 +18,7 @@ class Patient extends Component {
                 <div className="thumbnail">
                     <img src={appointment} alt="Lights" />
                     <div className="caption">
-                      <p>Appointments</p>
+                      <p>Set Appointments / View Calendar</p>
                     </div>
                 </div>
                 </Link>
@@ -27,7 +27,7 @@ class Patient extends Component {
                 <div className="thumbnail">
                     <img src={calendar} alt="Nature" />
                     <div className="caption">
-                      <p>Calendar</p>
+                      <p>Prescriptions</p>
                     </div>
                 </div>
               </div>

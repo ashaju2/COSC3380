@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import appointment from './appointment.jpg';
 import calendar from './calendar.jpg';
-import reports from './hospitalreport.jpg';
+import reportsImg from './hospitalreport.jpg';
 import patientreport from './patientreport.jpg';
 import { Link } from 'react-router-dom';
 import DocAppointment from './DocAppointment';
+import reports from './Doctor/reports';
 import data from '../data'
 
 class Doctor extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      
+    };
+  }
+
   render() {
-    console.log(this.props)
+    console.log(data.doctorLoggedIn)
     if (!data.doctorLoggedIn) {
       return (
         <div>
@@ -42,12 +50,14 @@ class Doctor extends Component {
                 </div>
               </div>
               <div className="col-md-4">
+                <Link to='/reports'>
                 <div className="thumbnail">
-                    <img src={reports} alt="Fjords"/>
+                    <img src={reportsImg} alt="Fjords"/>
                     <div className="caption">
                       <p>Reports</p>
                     </div>
                 </div>
+                </Link>
               </div>
             </div>
           </div>
