@@ -66,30 +66,47 @@ class DocLogin extends Component {
       <div className="DocLogin">
          <div className="container">
             <div className="row">
-                <div className="col-sm-4">
+                <div className="col-sm-6 well">
                     <h3>Login Page</h3>
 
-                      <form onSubmit={this.handleSubmit.bind(this)}>
-                        <input 
-                          type="text" 
-                          placeholder="UserName" 
-                          ref="username" 
-                        />
+                      <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                        <div className="form-group">
+                        <label className="control-label col-sm-3" for="username">Username:</label>
+                        <div className="col-sm-0">
+                          <input 
+                            type="text" 
+                            placeholder="UserName" 
+                            ref="username" 
+                          />
+                          </div>
+                          </div>
+                        <div className="form-group">
+                        <label className="control-label col-sm-3" for="username">Password:</label>
+                        <div className="col-sm-0">
+                        
                         <input 
                           type="text" 
                           placeholder="Password" 
                           ref="password"
                         />
-                        <input type="submit" value="Submit"/>
+                        </div>
+                        </div>
+                        <center><input type="submit" value="Submit"/></center>
                       </form>
 
                 </div>
                 <div className="col-sm-4">
-                    <h3>Manage your Dashboard online</h3>
+                  <div className="well">
+                    <div className="panel panel-default">
+                      <div className="panel-body"><h3>Manage your Dashboard online</h3></div>
+                    </div>
+                    
+                    <br></br>
                     <h4>Update your Appointments</h4>
                     <h4>Get health reminders</h4>
                     <h4>View upcoming appointments</h4>
                     <h4>View service history</h4>
+                    </div>
                 </div>
             </div>
         </div>

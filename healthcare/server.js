@@ -87,7 +87,7 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
     //       console.log(results[0].Specialty);
     //       console.log(results[0].Phone);
     // });
-  });
+  }); 
 
   app.post('/report', function(req, res) {
     console.log('I have new posted');

@@ -7,7 +7,7 @@ class reports extends Component {
             query: {}
         };
         this.state ={
-            responseJson : []
+            responseJson : {}
         };
         
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,7 +40,7 @@ class reports extends Component {
         this.setState({
             responseJson
         })
-        console.log(this.responseJson);
+        console.log(this.state.responseJson);
     })
       });
     }
@@ -70,6 +70,11 @@ class reports extends Component {
             />
             <input type="submit" value="Submit"/>
         </form>
+        <h3>Name:</h3>
+        <p>{this.state.responseJson.Fname}</p>
+        <p>{this.state.responseJson.Lname}</p>
+        <p>{this.state.responseJson.Address}</p>
+        <p>{this.state.responseJson.DateOfBirth}</p>
         </div>
         <div>
 
