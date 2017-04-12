@@ -25,7 +25,7 @@ class App extends Component {
     super();
     this.state = {
       user: [],
-      loginAccept: 'false'
+      loggedIn: false
     };
   }
   

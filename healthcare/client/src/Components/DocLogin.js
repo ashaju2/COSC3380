@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
-import data from '../data'
 
 class DocLogin extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
-      login: {}
+      login: {},
+      loginMessage: ''
     };
-
+    console.log(props);
   }
 
   handleSubmit(e) {
     var push = this.props.history.push;
+    var toggle = this.props.doctorToggleLogin;
     var replace = this.props.history.replace;
-    console.log(push);
-    
+    var logMessage = this.setState({loginMessage: 'Wrong user name or password!'});
     if(this.refs.username.value){
       this.setState({login: {
           username: this.refs.username.value,
           password: this.refs.password.value
         }
       }, function() {
-        fetch('/', { 
+        fetch('/doctorLogin', { 
       method: 'POST',
       headers: {
       'Accept': 'application/json',
@@ -37,9 +37,8 @@ class DocLogin extends Component {
       console.log(responseJson);
       if(responseJson === 1){
         console.log('Doctor');
-        data.doctorLoggedIn = true;
-        if(data.doctorLoggedIn == true){
-        push('/Doctor');} 
+        toggle();
+        replace('/Doctor'); 
         console.log(responseJson);
       }
       else if(responseJson === 2){
@@ -53,7 +52,7 @@ class DocLogin extends Component {
         console.log(responseJson);
       }
       else{
-        console.log("Wrong username or password");
+        logMessage;
       }
 
         })
@@ -71,26 +70,30 @@ class DocLogin extends Component {
 
                       <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                         <div className="form-group">
-                        <label className="control-label col-sm-3" for="username">Username:</label>
+                        <label className="control-label col-sm-3" htmlFor="username">Username:</label>
                         <div className="col-sm-0">
                           <input 
                             type="text" 
                             placeholder="UserName" 
                             ref="username" 
+                            required="true"
                           />
                           </div>
                           </div>
                         <div className="form-group">
-                        <label className="control-label col-sm-3" for="username">Password:</label>
+                        <label className="control-label col-sm-3" htmlFor="username">Password:</label>
                         <div className="col-sm-0">
                         
                         <input 
-                          type="text" 
+                          type="password" 
                           placeholder="Password" 
                           ref="password"
+                          required="true"
                         />
                         </div>
                         </div>
+                        <center><h5><div className="alert alert-danger">
+                          <strong>{this.state.loginMessage}</strong></div></h5></center>
                         <center><input type="submit" value="Submit"/></center>
                       </form>
 

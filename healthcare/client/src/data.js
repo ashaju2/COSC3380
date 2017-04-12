@@ -1,1 +1,0 @@
-exports.doctorLoggedIn = false;

@@ -6,17 +6,18 @@ import SysAdminLogin from './SysAdminLogin.js';
 import { Link } from 'react-router-dom';
 import about from './NavBarComponents/about';
 import contacts from './NavBarComponents/contacts';
-import data from '../data';
 
 class Frontview extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
         this.state = {showDocSignin: false};
         this.state = {showPatSignin: false};
         this.state = {showAdminSignin: false};
         this.OpenDocSignin = this.OpenDocSignin.bind(this);
         this.OpenPatSignin = this.OpenPatSignin.bind(this);
         this.OpenAdminSignin = this.OpenAdminSignin.bind(this);
+
+        console.log(props);
   }
   OpenDocSignin(){
       this.setState({showDocSignin: true});
@@ -46,12 +47,7 @@ class Frontview extends Component {
             <ul className="nav navbar-nav navbar-right">
                 <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <div className="dropdown">
-                {!data.doctorLoggedIn && 
-                    (<li><button className="glyphicon glyphicon-log-in dropbtn"> Login</button></li>)
-                }
-                {data.doctorLoggedIn && 
-                    (<li><button className="glyphicon glyphicon-log-in dropbtn danger"> Sign Out</button></li>)
-                }
+                    <li><button className="glyphicon glyphicon-log-in dropbtn"> Login</button></li>
                     <div className="dropdown-content">
                         <Link to="/DocLogin">Doctor</Link>
                         <Link to="/PatientLogin">Patient</Link>

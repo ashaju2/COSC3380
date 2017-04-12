@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
 
 class PatientLogin extends Component {
-    constructor(){
-    super();
+    constructor(props){
+    super(props);
     this.state = {
       login: {}
     };
-
   }
 
   handleSubmit(e) {
     var push = this.props.history.push;
     var replace = this.props.history.replace;
-    console.log(push);
-    
+    var toggle = this.props.patientToggleLogin;
+
     if(this.refs.username.value){
       this.setState({login: {
           username: this.refs.username.value,
           password: this.refs.password.value
         }
       }, function() {
-        fetch('/', { 
+        fetch('/patientLogin', { 
       method: 'POST',
       headers: {
       'Accept': 'application/json',
@@ -41,6 +40,7 @@ class PatientLogin extends Component {
       }
       else if(responseJson === 2){
         console.log('Patient');
+        toggle();
         push('/Patient');
         console.log(responseJson);
       }
@@ -71,7 +71,7 @@ class PatientLogin extends Component {
                           ref="username" 
                         />
                         <input 
-                          type="text" 
+                          type="password" 
                           placeholder="Password" 
                           ref="password"
                         />

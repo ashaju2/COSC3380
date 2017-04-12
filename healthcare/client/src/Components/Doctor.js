@@ -6,7 +6,6 @@ import patientreport from './patientreport.jpg';
 import { Link } from 'react-router-dom';
 import DocAppointment from './DocAppointment';
 import reports from './Doctor/reports';
-import data from '../data'
 
 class Doctor extends Component {
   constructor(props){
@@ -17,18 +16,15 @@ class Doctor extends Component {
   }
 
   render() {
-    console.log(data.doctorLoggedIn)
-    if (!data.doctorLoggedIn) {
-      return (
-        <div>
-          <p><b>ACCESS DENIED</b></p>
-        </div>
-      )
+    console.log(this.props.doctorLoggedIn)
+    if (!this.props.doctorLoggedIn) {
+      
+        this.props.history.replace('/DocLogin');
     }
     return (
       <div className="Doctor">
           <div className="container">
-            <center><h2>Dashboard</h2></center>
+            <center><div className="alert-info"><br></br><h2>Dashboard</h2><br></br></div></center>
             <br/>
             <div className="row">
               <div className="col-md-4">

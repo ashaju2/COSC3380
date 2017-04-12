@@ -3,6 +3,8 @@ var mysql = require('mysql');
 var bodyParser = require('body-parser');
 var path = require('path');
 var app = express();
+var puser = '';
+var duser = '';
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -31,14 +33,19 @@ connection.connect(function(err) {
   console.log('Connected to RDS!');
 });
 
+
+/**********************************************************
+      Doctor Login
+**********************************************************/
+
 // Listen to POST requests to /users.
-app.post('/', function(req, res) {
+app.post('/doctorLogin', function(req, res) {
     console.log('I have posted');
   // Get sent data.
-  var user = req.param('username');
+  user = req.param('username');
   var password = req.param('password');
   // Do a MySQL query.
-  console.log('My name is: ' + user + ' and my job is: ' + password);
+  console.log('My name is: ' + user + ' and my password is: ' + password);
   
 //Determine if username and password exist as a combination in login table in database, This is working
 //Also determine type of user: 1 = Doctor; 2 = Patient; 3 = Admin; 0 = not in database
@@ -89,6 +96,66 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
     // });
   }); 
 
+
+/*****************************************
+ Patient Login
+****************************************/ 
+
+
+// Listen to POST requests to /users.
+app.post('/patientLogin', function(req, res) {
+    console.log('I have posted');
+  // Get sent data.
+  puser = req.param('username');
+  var password = req.param('password');
+  // Do a MySQL query.
+  console.log('My name is: ' + puser + ' and my password is: ' + password);
+  
+//Determine if username and password exist as a combination in login table in database, This is working
+//Also determine type of user: 1 = Doctor; 2 = Patient; 3 = Admin; 0 = not in database
+var loginSuccessful = 0;
+var userType = "does_not_exist";
+var userTypeInt = 0;
+connection.query('CALL loginExists(?,?)', [puser, password], function(err, rows, fields){ //Does username exist already
+  loginSuccessful = rows[0][0].loginSuccess;
+  if (loginSuccessful === 1){ 
+    console.log("login successful"); }
+  else {
+    console.log("login unsuccessful");
+    res.json(userTypeInt);
+}
+  if(loginSuccessful === 1)
+  {
+    connection.query('CALL CLINIC.getUserType( ? )', [puser], function(err, rows){
+      // -- ouput fields are
+    // -- type (varchar)
+    userType = rows[0][0].type;
+    if(err) {
+      return console.log(err);
+    }
+    if(userType == "Doctor") {
+      userTypeInt = 1;
+    }
+    else if (userType == "Patient") {
+      userTypeInt = 2;
+    }
+    else if (userType == "Admin") {
+      userTypeInt = 3;
+    }
+    console.log("Type of user: ", userType);
+    console.log("The userTypeInt is ", userTypeInt);
+
+    res.json(userTypeInt);
+      });
+    }
+  });
+  }); 
+
+
+/*******************************************
+ Doctor Report Page
+********************************************/
+
   app.post('/report', function(req, res) {
     console.log('I have new posted');
   // Get sent data.
@@ -112,3 +179,64 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
   });
 
   });
+
+/*******************************************
+ Doctor Appointment setup 
+*******************************************/
+
+
+app.post('/DocAppointment', function(req, res) {
+    console.log('I have new posted 2');
+  // Get sent data.
+  var selectedOption = req.param('selectedOption');
+  // Do a MySQL query.
+  console.log('Patient request accepted or not is: ' + selectedOption);
+});
+
+/*******************************************
+ Doctor Appointment Time Slot 
+*******************************************/
+
+
+app.get('/DocAppointmentTimeSlot', function(req, res) {
+    console.log('I have new posted Time Slot');
+  // Get sent data.
+  var date = '2017-04-17';
+  var docID = '121';
+  connection.query('call unoccupied_time_slots_by_date_and_patientUserName(?,?)',[puser,date],function(err,rows){
+  if(err)console.log(err);
+  console.log(rows[0]);
+  res.json(rows[0]);
+
+  });
+});
+
+
+
+/*******************************************
+ Patient Appointment setup 
+*******************************************/
+
+
+app.post('/patappointment', function(req, res) {
+    console.log('I have new posted 2');
+  // Get sent data.
+  var apptTimeSlot = req.param('TimeSlotID');
+  var TimeSlot = "11";
+  var reason = req.param('reason');
+  var date = '2017-04-25';
+  // Do a MySQL query.
+  console.log('Patient request accepted or not is: ' + " " + apptTimeSlot + " " + date);
+
+  connection.query('call new_appointment_existingPatient( ? , ? , ? , ? );',
+  [date, reason, puser, apptTimeSlot],function(err, results){
+  if(err) {
+    return console.log(err);
+  }
+  else{
+    console.log("Appointment Added.")
+  res.json(1);
+  }
+});
+
+});
