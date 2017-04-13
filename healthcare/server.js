@@ -5,6 +5,7 @@ var path = require('path');
 var app = express();
 var puser = '';
 var duser = '';
+var date = '';
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -193,16 +194,17 @@ app.post('/DocAppointment', function(req, res) {
   console.log('Patient request accepted or not is: ' + selectedOption);
 });
 
+
 /*******************************************
  Doctor Appointment Time Slot 
 *******************************************/
 
 
-app.get('/DocAppointmentTimeSlot', function(req, res) {
+app.post('/DocAppointmentTimeSlot', function(req, res) {
     console.log('I have new posted Time Slot');
   // Get sent data.
-  var date = '2017-04-17';
-  var docID = '121';
+  date = req.param('appointDate');
+  console.log(date);
   connection.query('call unoccupied_time_slots_by_date_and_patientUserName(?,?)',[puser,date],function(err,rows){
   if(err)console.log(err);
   console.log(rows[0]);
@@ -222,9 +224,7 @@ app.post('/patappointment', function(req, res) {
     console.log('I have new posted 2');
   // Get sent data.
   var apptTimeSlot = req.param('TimeSlotID');
-  var TimeSlot = "11";
   var reason = req.param('reason');
-  var date = '2017-04-25';
   // Do a MySQL query.
   console.log('Patient request accepted or not is: ' + " " + apptTimeSlot + " " + date);
 

@@ -9,24 +9,15 @@ class PatAppointment extends Component {
         lastName: '',
         firstName: '',
         TimeSlotID: null,
-        reason: ''
+        reason: '',
+        appointDate: null,
       };
       
   }
 
 
-componentWillMount(){
-     fetch('/DocAppointmentTimeSlot', { method: 'GET'})
-        .then((response) => response.json())
-        .then((responseJson) => {
-          this.setState( {doctorData: responseJson} );
-        console.log(this.state.doctorData);
-    });
-
-
-}
-
 handleSubmit(e){
+      var push = this.props.history.push;
       fetch('/patappointment', { 
       method: 'POST',
       headers: {
@@ -41,6 +32,7 @@ handleSubmit(e){
       return response.json()
     }).then(function(responseJson){
         console.log("Yess, it worked");
+        push('/Submission');
         });
 
     e.preventDefault(); 
@@ -48,9 +40,12 @@ handleSubmit(e){
 
   timeData(){
       let data = this.state.doctorData;
-      let iterator = data.map((ndata) => <li key={ndata.TimeSlotID}><input type="radio" name="options" selected={this.state.TimeSlotID == ndata.TimeSlotID} value={ndata.TimeSlotID} onChange={this.handleRadioChange.bind(this)}/>{ndata.StartTime}</li>);
+      if (!data) {
+        return null
+      }
+      let iterator = data.map((ndata) => <div key={ndata.TimeSlotID}><input type="radio" name="options" selected={this.state.TimeSlotID == ndata.TimeSlotID} value={ndata.TimeSlotID} onChange={this.handleRadioChange.bind(this)}/>{ndata.StartTime}</div>);
       console.log(iterator);
-      return <h1>{iterator}</h1>
+      return <h3>{iterator}</h3>
     }
 
   handleInputChange(event) {
@@ -61,16 +56,48 @@ handleSubmit(e){
   handleRadioChange(event) {
     this.setState({ TimeSlotID: event.target.value });
   }
-  render() {
-    if(!this.state.doctorData){
-      return <div><br></br>Loading............ <br></br>Thank you for your patience</div>
+
+  handleDateChange(event){
+    if (event.target.value.length !== 10) {
+      console.log('not 10')
+      this.setState({ doctorData: null })
+      return
+    }
+    if (event.target.value.length === 10) {
+      fetch('/DocAppointmentTimeSlot', { 
+      method: 'POST',
+      headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        appointDate: event.target.value
+      })
+    })
+    .then((response) => response.json())
+        .then((responseJson) => {
+          this.setState( {doctorData: responseJson} );
+        console.log(this.state.doctorData);
+    });
+    }
+    
+  }
+
+display(){
+    if(!this.state.appointDate){
+      return (
+      <div className="form-group">
+        <label className="checkbox">Pick a time slot</label>
+        {this.timeData()}
+      </div>
+      )
     }
 
+}
+  render() {
 
     return (
       <div className="PatAppointment">
-        {this.state.doctorData[0].TimeSlotID}
-        {this.iter}
         <div className="row">
           <div className="col-sm-5">
       <form role="form" onSubmit={this.handleSubmit.bind(this)}>
@@ -78,23 +105,16 @@ handleSubmit(e){
 
         <div className="form-group">
           <h2>Health Care Appointment</h2>
-          <label htmlFor="name">Last Name</label>
-          <input id='lastName' type='text' className='form-control' value={this.state.lastName} onChange={this.handleInputChange.bind(this)} />
-          <label htmlFor="name">First Name</label>
-          <input id="firstName" type="type" className="form-control" value={this.state.firstName} onChange={this.handleInputChange.bind(this)} />
         </div>
 
       <div className="form-group">
         <label htmlFor="name">Reason/Notes</label>
         <textarea id='reason' type='text' className="form-control" value={this.state.reason} onChange={this.handleInputChange.bind(this)}></textarea>
-        <label className="checkbox">Pick a time slot</label>
-        {this.timeData()}
-        {/*<TimeData data={this.state.doctorData}/>*/}
+        <label className="checkbox">Pick a Date</label>
+        <input type='text' className="form-control" placeholder="yyyy-mm-dd"  onChange={this.handleDateChange.bind(this)}/>
       </div>
-
+      {this.display()}
       <br></br>
-      <br></br>
-
       <pre>
       <button className="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
       </pre>
@@ -102,10 +122,6 @@ handleSubmit(e){
       </form>
       </div>
 
-      <div className="col-sm-3">
-
-        
-      </div>
       </div>
             </div>
           );
