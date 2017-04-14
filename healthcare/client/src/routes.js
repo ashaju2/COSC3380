@@ -15,6 +15,7 @@ import reports from './Components/Doctor/reports';
 import PatAppointment from './Components/PatAppointment';
 import Frontview from './Components/Frontview';
 import Submission from './Components/Submission';
+import PatReport from './Components/PatReport';
 
 class Routes extends Component {
     constructor(){
@@ -48,7 +49,8 @@ class Routes extends Component {
         <Route path="/Patient" render={({history}) => <Patient history={history} patientLoggedIn={this.state.patientLoggedIn}/>}/> 
         <Route path="/reports" component={reports} /> 
         <Route path="/PatAppointment" component={PatAppointment} /> 
-        <Route path="/Submission" component={Submission} /> 
+        <Route path="/Submission" component={Submission} />
+        <Route path="/PatReport" component={PatReport} />
         
       </div>
     </Router>

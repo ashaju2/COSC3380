@@ -6,6 +6,7 @@ var app = express();
 var puser = '';
 var duser = '';
 var date = '';
+var PatientID = '';
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -86,15 +87,6 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
       });
     }
   });
-    // console.log(79, loginSuccessful);
-    // connection.query('SELECT DOCTOR.* FROM DOCTOR where DOCTOR.username = ?',[user],function(err,results){ //reading back data that i inserted 
-    //       console.log(results[0].Fname);
-    //       console.log(results[0].Minit);
-    //       console.log(results[0].Lname);
-    //       console.log(results[0].Address);
-    //       console.log(results[0].Specialty);
-    //       console.log(results[0].Phone);
-    // });
   }); 
 
 
@@ -150,6 +142,10 @@ connection.query('CALL loginExists(?,?)', [puser, password], function(err, rows,
       });
     }
   });
+    connection.query('call CLINIC.get_PatientID_from_patUsername(?)', [puser], function(err, rows){
+      PatientID = rows[0][0].PatientID;
+      console.log(PatientID);  
+    })
   }); 
 
 
@@ -208,6 +204,64 @@ app.post('/DocAppointmentTimeSlot', function(req, res) {
   connection.query('call unoccupied_time_slots_by_date_and_patientUserName(?,?)',[puser,date],function(err,rows){
   if(err)console.log(err);
   console.log(rows[0]);
+  res.json(rows[0]);
+
+  });
+});
+
+
+/*******************************************
+ Patient Prescription Page
+********************************************/
+
+app.get('/PatPrescription', function(req, res) {
+    console.log('I have Patient Prescription');
+  // Get sent data.
+  connection.query('call CLINIC.list_prescriptions_for_patient(?)', [PatientID], function(err, rows){
+  console.log(rows[0]);
+  res.json(rows[0]);
+
+  });
+});
+
+
+/*******************************************
+ Patient Report Page List Doctor
+********************************************/
+app.get('/PatReportDoctor', function(req, res) {
+    console.log('I have Patient Report Doctor');
+  // Get sent data.
+  connection.query('call CLINIC.list_doctors_assigned_to_patient(?)', [PatientID], function(err, rows){
+  console.log(rows[0]);  
+  
+  res.json(rows[0]);
+
+  });
+});
+
+/*******************************************
+ Patient Report Page List Details
+********************************************/
+app.get('/PatReportDetails', function(req, res) {
+    console.log('I have Patient Report Details');
+  // Get sent data.
+  connection.query('call CLINIC.patient_details_by_patientID(?)', [PatientID], function(err, rows){
+  console.log(rows[0]);  
+  
+  res.json(rows[0]);
+
+  });
+});
+
+/*******************************************
+ Patient Report Page List Tests
+********************************************/
+app.get('/PatReportTests', function(req, res) {
+    console.log('I have Patient Report Tests');
+  // Get sent data.
+  connection.query('call CLINIC.list_tests_for_patient(?)', [PatientID], function(err, rows){
+  console.log(rows[0]);  
+  
   res.json(rows[0]);
 
   });
