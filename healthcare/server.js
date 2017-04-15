@@ -425,3 +425,57 @@ app.get('/newDocCalendar', function(req, res) {
 
   });
 });
+
+/**********************************************************
+      SysAdmin Login
+**********************************************************/
+
+// Listen to POST requests to /users.
+app.post('/sysAdminLogin', function(req, res) {
+    console.log('I have posted');
+  // Get sent data.
+  user = req.param('username');
+  var password = req.param('password');
+  // Do a MySQL query.
+  console.log('My name is: ' + user + ' and my password is: ' + password);
+  
+//Determine if username and password exist as a combination in login table in database, This is working
+//Also determine type of user: 1 = Doctor; 2 = Patient; 3 = Admin; 0 = not in database
+var loginSuccessful = 0;
+var userType = "does_not_exist";
+var userTypeInt = 0;
+connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, fields){ //Does username exist already
+  loginSuccessful = rows[0][0].loginSuccess;
+  if (loginSuccessful === 1){ 
+    console.log("login successful"); }
+  else {
+    console.log("login unsuccessful");
+    res.json(userTypeInt);
+}
+  if(loginSuccessful === 1)
+  {
+    connection.query('CALL CLINIC.getUserType( ? )', [user], function(err, rows){
+      // -- ouput fields are
+    // -- type (varchar)
+    userType = rows[0][0].type;
+    if(err) {
+      return console.log(err);
+    }
+    if(userType == "Doctor") {
+      userTypeInt = 1;
+    }
+    else if (userType == "Patient") {
+      userTypeInt = 2;
+    }
+    else if (userType == "Admin") {
+      userTypeInt = 3;
+    }
+    console.log("Type of user: ", userType);
+    console.log("The userTypeInt is ", userTypeInt);
+
+    res.json(userTypeInt);
+      });
+    }
+  });
+  }); 
+

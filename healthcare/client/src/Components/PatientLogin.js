@@ -41,7 +41,7 @@ class PatientLogin extends Component {
       else if(responseJson === 2){
         console.log('Patient');
         toggle();
-        push('/Patient');
+        replace('/Patient');
         console.log(responseJson);
       }
       else if(responseJson === 3){

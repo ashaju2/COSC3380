@@ -19,6 +19,7 @@ import PatReport from './Components/PatReport';
 import Signup from './Components/Signup';
 import DocCalendar from './Components/DocCalendar';
 import PatPrescription from './Components/PatPrescription';
+import SysAdminLogin from './Components/SysAdminLogin';
 
 class Routes extends Component {
     constructor(){
@@ -57,6 +58,8 @@ class Routes extends Component {
         <Route path="/Signup" component={Signup} />
         <Route path="/DocCalendar" component={DocCalendar} />
         <Route path="/PatPrescription" component={PatPrescription} />
+        <Route path="/SysAdminLogin" component={SysAdminLogin} />
+        <Route path="/SysAdmin" component={SysAdmin} />
         
         
       </div>
