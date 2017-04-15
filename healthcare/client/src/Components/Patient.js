@@ -6,6 +6,7 @@ import patientreport from './patientreport.jpg';
 import { Link } from 'react-router-dom';
 import PatAppointment from './PatAppointment';
 import PatReport from './PatReport';
+import PatPrescription from './PatPrescription';
 
 class Patient extends Component {
   constructor(props){
@@ -36,12 +37,14 @@ class Patient extends Component {
                 </Link>
               </div>
               <div className="col-md-4">
+                <Link to='/PatPrescription'>
                 <div className="thumbnail">
                     <img src={prescription} alt="Nature" />
                     <div className="caption">
                       <p>Prescriptions</p>
                     </div>
                 </div>
+                </Link>
               </div>
               <div className="col-md-4">
                 <Link to='/PatReport'>

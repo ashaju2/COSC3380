@@ -16,6 +16,9 @@ import PatAppointment from './Components/PatAppointment';
 import Frontview from './Components/Frontview';
 import Submission from './Components/Submission';
 import PatReport from './Components/PatReport';
+import Signup from './Components/Signup';
+import DocCalendar from './Components/DocCalendar';
+import PatPrescription from './Components/PatPrescription';
 
 class Routes extends Component {
     constructor(){
@@ -51,6 +54,10 @@ class Routes extends Component {
         <Route path="/PatAppointment" component={PatAppointment} /> 
         <Route path="/Submission" component={Submission} />
         <Route path="/PatReport" component={PatReport} />
+        <Route path="/Signup" component={Signup} />
+        <Route path="/DocCalendar" component={DocCalendar} />
+        <Route path="/PatPrescription" component={PatPrescription} />
+        
         
       </div>
     </Router>

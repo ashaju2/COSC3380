@@ -6,6 +6,7 @@ import SysAdminLogin from './SysAdminLogin.js';
 import { Link } from 'react-router-dom';
 import about from './NavBarComponents/about';
 import contacts from './NavBarComponents/contacts';
+import Signup from './Signup';
 
 class Frontview extends Component {
   constructor(props){
@@ -45,7 +46,7 @@ class Frontview extends Component {
                 <li><Link to="/about">About</Link></li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
-                <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><Link to="/Signup"><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
                 <div className="dropdown">
                     <li><button className="glyphicon glyphicon-log-in dropbtn"> Login</button></li>
                     <div className="dropdown-content">

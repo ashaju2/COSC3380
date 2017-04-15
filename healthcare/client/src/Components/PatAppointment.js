@@ -11,10 +11,23 @@ class PatAppointment extends Component {
         TimeSlotID: null,
         reason: '',
         appointDate: null,
+        futureAppointment: null,
       };
       
   }
 
+componentWillMount(){
+  fetch('/futureAppointment')
+    .then(response => response.json())
+        .then((responseJson) => {
+        this.setState({
+            futureAppointment: responseJson
+        })
+        console.log(this.state.futureAppointment);
+
+    })
+      
+}
 
 handleSubmit(e){
       var push = this.props.history.push;
@@ -43,7 +56,7 @@ handleSubmit(e){
       if (!data) {
         return null
       }
-      let iterator = data.map((ndata) => <div key={ndata.TimeSlotID}><input type="radio" name="options" selected={this.state.TimeSlotID == ndata.TimeSlotID} value={ndata.TimeSlotID} onChange={this.handleRadioChange.bind(this)}/>{ndata.StartTime}</div>);
+      let iterator = data.map((ndata) => <div key={ndata.TimeSlotID}><input type="radio" name="options" selected={this.state.TimeSlotID == ndata.TimeSlotID} value={ndata.TimeSlotID} onChange={this.handleRadioChange.bind(this)}/>{ndata.StartTimeFormatted}</div>);
       console.log(iterator);
       return <h3>{iterator}</h3>
     }
@@ -92,14 +105,24 @@ display(){
       </div>
       )
     }
-
 }
+
+futureAppointment(){
+  let futAppoint = this.state.futureAppointment;
+      if (!futAppoint) {
+        return null
+      }
+      let appointLoop = futAppoint.map((nfutAppoint) => <div key={nfutAppoint.AppointmentID}>Date: {nfutAppoint.DateFormatted} Time: {nfutAppoint.TimeFormatted}</div>);
+      console.log(appointLoop);
+      return <h4>{appointLoop}</h4>
+}
+
   render() {
 
     return (
       <div className="PatAppointment">
         <div className="row">
-          <div className="col-sm-5">
+          <div className="col-sm-6">
       <form role="form" onSubmit={this.handleSubmit.bind(this)}>
         <div className="container-fluid">
 
@@ -120,8 +143,12 @@ display(){
       </pre>
       </div>
       </form>
-      </div>
 
+      </div >
+      <div className="col-sm-6">
+        <h2>Future Appointments</h2>
+        {this.futureAppointment()}
+      </div>
       </div>
             </div>
           );

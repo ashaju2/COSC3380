@@ -7,6 +7,7 @@ var puser = '';
 var duser = '';
 var date = '';
 var PatientID = '';
+var DoctorID = '';
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -87,6 +88,10 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
       });
     }
   });
+  connection.query('call CLINIC.get_DoctorID_from_docUsername(?)', [user], function(err, rows){
+      DoctorID = rows[0][0].DoctorID;
+      console.log(DoctorID);
+    });
   }); 
 
 
@@ -201,9 +206,16 @@ app.post('/DocAppointmentTimeSlot', function(req, res) {
   // Get sent data.
   date = req.param('appointDate');
   console.log(date);
-  connection.query('call unoccupied_time_slots_by_date_and_patientUserName(?,?)',[puser,date],function(err,rows){
+  connection.query('call CLINIC.list_doctors_assigned_to_patient(?)', [PatientID], function(err, rows){
+  if(err)console.log(err);
+  DoctorID = rows[0][0].DoctorID;    
+  console.log(DoctorID);
+  });
+
+  connection.query('call unoccupied_time_slots_by_date_and_doctorID(?,?)',[DoctorID,date],function(err,rows){
   if(err)console.log(err);
   console.log(rows[0]);
+  console.log(DoctorID);
   res.json(rows[0]);
 
   });
@@ -293,4 +305,123 @@ app.post('/patappointment', function(req, res) {
   }
 });
 
+});
+
+/*******************************************
+ Patient Signup (Still needs work)
+********************************************/
+
+app.post('/Signup', function(req, res) {
+    console.log('I have Signed Up');
+  // Get sent data.
+  var firstname = req.param('firstname');
+  var lastname = req.param('lastname');
+  var middlename = req.param('middlename');
+  var ssn = req.param('ssn');
+  var phone = req.param('phone');
+  var homeaddress = req.param('homeaddress');
+  var dob = req.param('dob');
+  var doctor = req.param('doctor');
+  // Do a MySQL query.
+
+  connection.query('call new_appointment_existingPatient( ? , ? , ? , ? );',
+  [date, reason, puser, apptTimeSlot],function(err, results){
+  if(err) {
+    return console.log(err);
+  }
+  else{
+    console.log("Appointment Added.")
+  res.json(1);
+  }
+});
+
+});
+
+
+
+/*******************************************
+ Doctor based on DoctorType 
+********************************************/
+app.post('/getDoctor', function(req, res) {
+  var DoctorType = req.param('DoctorType');
+
+  connection.query('call CLINIC.list_doctors_by_specialty(?)', [DoctorType], function(err, rows){
+    if(err)console.log(err);
+    console.log(rows);
+    res.json(rows[0]);
+  });
+});
+
+/*******************************************
+ Future appointments on Patient side 
+********************************************/
+
+app.get('/futureAppointment',function(req,res){
+
+    connection.query('call CLINIC.future_appointment_by_patientID(?)',[PatientID],function(err,rows){
+    if(err)console.log(err);
+    console.log(rows[0]);
+    var row=[];
+    for(var i=0 ; i<rows[0].length; i++){
+      row.push(rows[0][i]);
+    }
+    
+    res.json(row);
+  });
+
+
+});
+
+/*******************************************
+ Future appointments on Doctor side 
+********************************************/
+app.get('/docCalendar',function(req,res){
+
+    connection.query('call CLINIC.future_appointment_by_patientID(?)',[DoctorID],function(err,rows){
+    if(err)console.log(err);
+    console.log(rows[0]);
+    
+    res.json(rows[0]);
+  });
+
+
+});
+
+/*******************************************
+ Doctor listing all patientds
+*******************************************/
+app.get('/patientsOfDoctor', function(req, res){
+  connection.query('call CLINIC.list_patients_for_doctor(?)', [DoctorID], function(err, rows){
+    console.log("List of Patients for Doctor:");
+    console.log(rows);
+  res.json(rows[0]);
+  });
+});
+
+/*******************************************
+ Patient Prescription Page
+********************************************/
+
+app.get('/PatPrescriptions', function(req, res) {
+    console.log('I have Patient Prescription');
+  // Get sent data.
+  connection.query('call CLINIC.list_prescriptions_for_patient(?)', [PatientID], function(err, rows){
+  console.log(rows[0]);
+  res.json(rows[0]);
+
+  });
+});
+
+/*******************************************
+ Doctor Calendar
+********************************************/
+
+app.get('/newDocCalendar', function(req, res) {
+    console.log('I have Patient Prescription');
+  // Get sent data.
+  connection.query('call CLINIC.get_todays_Appts_Doctor(?)', [DoctorID], function(err, rows){
+  console.log(rows[0]);
+  res.json(rows[0]);
+
+  });
 });
