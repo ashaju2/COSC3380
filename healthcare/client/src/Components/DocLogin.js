@@ -21,7 +21,7 @@ class DocLogin extends Component {
           password: this.refs.password.value
         }
       }, function() {
-        fetch('/doctorLogin', { 
+        fetch('/doctorLogin', {
       method: 'POST',
       headers: {
       'Accept': 'application/json',
@@ -38,7 +38,7 @@ class DocLogin extends Component {
       if(responseJson === 1){
         console.log('Doctor');
         toggle();
-        replace('/Doctor'); 
+        replace('/Doctor');
         console.log(responseJson);
       }
       else if(responseJson === 2){
@@ -58,66 +58,54 @@ class DocLogin extends Component {
         })
       });
     }
-    e.preventDefault(); 
+    e.preventDefault();
   }
   render() {
     return (
       <div className="DocLogin">
-         <div className="container">
-            <div className="row">
-                <div className="col-sm-6 well">
-                    <h3>Login Page</h3>
-
-                      <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-                        <div className="form-group">
-                        <label className="control-label col-sm-3" htmlFor="username">Username:</label>
-                        <div className="col-sm-0">
-                          <input 
-                            type="text" 
-                            placeholder="UserName" 
-                            ref="username" 
-                            required="true"
-                          />
-                          </div>
-                          </div>
-                        <div className="form-group">
-                        <label className="control-label col-sm-3" htmlFor="username">Password:</label>
-                        <div className="col-sm-0">
-                        
-                        <input 
-                          type="password" 
-                          placeholder="Password" 
-                          ref="password"
-                          required="true"
-                        />
-                        </div>
-                        </div>
-                        <center><h5><div className="alert alert-danger">
-                          <strong>{this.state.loginMessage}</strong></div></h5></center>
-                        <center><input type="submit" value="Submit"/></center>
-                      </form>
-
+        <center><div className="panel panel-primary panel-resizable">
+          <div className="panel-heading">
+          <h3 className="panel-title">Doctor Login</h3>
+          </div>
+          <div className="panel-body">
+            <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+              <div className="form-group">
+              <div className="inputcontainer">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="UserName"
+                  ref="username"
+                  required="true"
+                />
                 </div>
-                <div className="col-sm-4">
-                  <div className="well">
-                    <div className="panel panel-default">
-                      <div className="panel-body"><h3>Manage your Dashboard online</h3></div>
-                    </div>
-                    
-                    <br></br>
-                    <h4>Update your Appointments</h4>
-                    <h4>Get health reminders</h4>
-                    <h4>View upcoming appointments</h4>
-                    <h4>View service history</h4>
-                    </div>
-                </div>
+              </div>
+              <div className="form-group">
+              <div className="inputcontainer">
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Password"
+                ref="password"
+                required="true"
+              />
+              </div>
+              </div>
+
+              <center><input type="submit" className="btn btn-primary" value="Submit"/></center>
+            </form>
             </div>
-        </div>
-
+            <div>
+              <h4>Manage your Dashboard online</h4>
+              <h4><small>Update your Appointments</small></h4>
+              <h4><small>Get health reminders</small></h4>
+              <h4><small>View upcoming appointments</small></h4>
+              <h4><small>View service history</small></h4>
+            </div>
+          </div></center>
       </div>
     );
   }
 }
 
 export default DocLogin;
-

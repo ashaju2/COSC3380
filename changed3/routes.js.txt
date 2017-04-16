@@ -21,7 +21,7 @@ import DocCalendar from './Components/DocCalendar';
 import PatPrescription from './Components/PatPrescription';
 import SysAdminLogin from './Components/SysAdminLogin';
 import SysAdminReports from './Components/SysAdminReports';
-import AddDoctors from './Components/AddDoctors';
+
 
 class Routes extends Component {
     constructor(){
@@ -41,20 +41,20 @@ class Routes extends Component {
   }
 
   render(){
-    
+
     return(
     <Router history={hashHistory}>
       <div>
         <Route path="/" component={App}  />
-        <Route path="/Doctor" render={({history}) => <Doctor history={history} doctorLoggedIn={this.state.doctorLoggedIn}/>} /> 
-        <Route path="/DocAppointment" component={DocAppointment} /> 
-        <Route path="/about" component={about} /> 
-        <Route path="/contacts" component={contacts} /> 
-        <Route path="/DocLogin" render={({history}) => <DocLogin history={history} doctorLoggedIn={this.state.doctorLoggedIn} doctorToggleLogin={this.doctorToggleLoggedIn.bind(this)}/>} /> 
-        <Route path="/PatientLogin" render={({history}) => <PatientLogin history={history} patientLoggedIn={this.state.patientLoggedIn} patientToggleLogin={this.patientToggleLoggedIn.bind(this)}/>} /> 
-        <Route path="/Patient" render={({history}) => <Patient history={history} patientLoggedIn={this.state.patientLoggedIn}/>}/> 
-        <Route path="/reports" component={reports} /> 
-        <Route path="/PatAppointment" component={PatAppointment} /> 
+        <Route path="/Doctor" render={({history}) => <Doctor history={history} doctorLoggedIn={this.state.doctorLoggedIn}/>} />
+        <Route path="/DocAppointment" component={DocAppointment} />
+        <Route path="/about" component={about} />
+        <Route path="/contacts" component={contacts} />
+        <Route path="/DocLogin" render={({history}) => <DocLogin history={history} doctorLoggedIn={this.state.doctorLoggedIn} doctorToggleLogin={this.doctorToggleLoggedIn.bind(this)}/>} />
+        <Route path="/PatientLogin" render={({history}) => <PatientLogin history={history} patientLoggedIn={this.state.patientLoggedIn} patientToggleLogin={this.patientToggleLoggedIn.bind(this)}/>} />
+        <Route path="/Patient" render={({history}) => <Patient history={history} patientLoggedIn={this.state.patientLoggedIn}/>}/>
+        <Route path="/reports" component={reports} />
+        <Route path="/PatAppointment" component={PatAppointment} />
         <Route path="/Submission" component={Submission} />
         <Route path="/PatReport" component={PatReport} />
         <Route path="/Signup" component={Signup} />
@@ -63,8 +63,8 @@ class Routes extends Component {
         <Route path="/SysAdminLogin" component={SysAdminLogin} />
         <Route path="/SysAdmin" component={SysAdmin} />
         <Route path="/SysAdminReports" component={SysAdminReports} />
-        <Route path="/AddDoctors" component={AddDoctors} />
-       
+
+
       </div>
     </Router>
   )}

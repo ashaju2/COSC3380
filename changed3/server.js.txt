@@ -8,22 +8,6 @@ var duser = '';
 var date = '';
 var PatientID = '';
 var DoctorID = '';
-const nodemailer = require('nodemailer');
-var smtpPool = require('nodemailer-smtp-pool');
-var CronJob = require('cron').CronJob;
- 
-// Create a SMTP transporter object
-let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: 'Healthcareautoresponse',
-        pass: 'grep1671'
-    },
-    
-});
-
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -52,44 +36,6 @@ connection.connect(function(err) {
   console.log('Connected to RDS!');
 });
 
-var job = new CronJob({
-  cronTime: '00 39 20 * * 1-7',
-  onTick: function() {
-    connection.query('call CLINIC.appointment_email_alert()',[],function(err,rows,fields){
-        if(err)console.log(err);
-         
-         
-        for(var i=0;i<rows[0].length;i++ )
-            var email=rows[0][i].email;
-            console.log(email);
-         
-         
-         
-        let mailOptions = {
-             
-     
-    from: '"Clinic 👻" <Healthcareautoresponse@gmail.com>', // sender address
-    to: email, // list of receivers
-    subject: 'Appointment ✔', // Subject line
-    text: 'You have an appointment today', // plain text body
-    html: '<b>You have an appointment today /b>' // html body
-    };
- 
-// send mail with defined transport object
-transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        return console.log(error);
-    }
-    console.log('Message %s sent: %s', info.messageId, info.response);
-});
-    });
-  },
-  start: false,
-  timeZone: 'America/Chicago'
-});
-job.start();
-
-
 
 /**********************************************************
       Doctor Login
@@ -103,7 +49,7 @@ app.post('/doctorLogin', function(req, res) {
   var password = req.param('password');
   // Do a MySQL query.
   console.log('My name is: ' + user + ' and my password is: ' + password);
-  
+
 //Determine if username and password exist as a combination in login table in database, This is working
 //Also determine type of user: 1 = Doctor; 2 = Patient; 3 = Admin; 0 = not in database
 var loginSuccessful = 0;
@@ -111,7 +57,7 @@ var userType = "does_not_exist";
 var userTypeInt = 0;
 connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, fields){ //Does username exist already
   loginSuccessful = rows[0][0].loginSuccess;
-  if (loginSuccessful === 1){ 
+  if (loginSuccessful === 1){
     console.log("login successful"); }
   else {
     console.log("login unsuccessful");
@@ -146,12 +92,12 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
       DoctorID = rows[0][0].DoctorID;
       console.log(DoctorID);
     });
-  }); 
+  });
 
 
 /*****************************************
  Patient Login
-****************************************/ 
+****************************************/
 
 
 // Listen to POST requests to /users.
@@ -162,7 +108,7 @@ app.post('/patientLogin', function(req, res) {
   var password = req.param('password');
   // Do a MySQL query.
   console.log('My name is: ' + puser + ' and my password is: ' + password);
-  
+
 //Determine if username and password exist as a combination in login table in database, This is working
 //Also determine type of user: 1 = Doctor; 2 = Patient; 3 = Admin; 0 = not in database
 var loginSuccessful = 0;
@@ -170,7 +116,7 @@ var userType = "does_not_exist";
 var userTypeInt = 0;
 connection.query('CALL loginExists(?,?)', [puser, password], function(err, rows, fields){ //Does username exist already
   loginSuccessful = rows[0][0].loginSuccess;
-  if (loginSuccessful === 1){ 
+  if (loginSuccessful === 1){
     console.log("login successful"); }
   else {
     console.log("login unsuccessful");
@@ -203,9 +149,9 @@ connection.query('CALL loginExists(?,?)', [puser, password], function(err, rows,
   });
     connection.query('call CLINIC.get_PatientID_from_patUsername(?)', [puser], function(err, rows){
       PatientID = rows[0][0].PatientID;
-      console.log(PatientID);  
+      console.log(PatientID);
     })
-  }); 
+  });
 
 
 /*******************************************
@@ -221,7 +167,7 @@ connection.query('CALL loginExists(?,?)', [puser, password], function(err, rows,
   // Do a MySQL query.
   console.log('Patient First name is: ' + firstName + ' and Last Name  is: ' + lastName + 'patientID is' + patientID);
 
-  connection.query('SELECT PATIENT.* FROM PATIENT where PATIENT.PatientID = ?',[patientID],function(err,results){ //reading back data that i inserted 
+  connection.query('SELECT PATIENT.* FROM PATIENT where PATIENT.PatientID = ?',[patientID],function(err,results){ //reading back data that i inserted
         console.log(results[0].PatientID);
         console.log(results[0].Fname);
         console.log(results[0].Minit);
@@ -230,14 +176,14 @@ connection.query('CALL loginExists(?,?)', [puser, password], function(err, rows,
         console.log(results[0].Allergies);
         console.log(results[0].Conditions);
         console.log(results[0].Gender);
-        
+
         res.json(results[0]);
   });
 
   });
 
 /*******************************************
- Doctor Appointment setup 
+ Doctor Appointment setup
 *******************************************/
 
 
@@ -251,7 +197,7 @@ app.post('/DocAppointment', function(req, res) {
 
 
 /*******************************************
- Doctor Appointment Time Slot 
+ Doctor Appointment Time Slot
 *******************************************/
 
 
@@ -262,7 +208,7 @@ app.post('/DocAppointmentTimeSlot', function(req, res) {
   console.log(date);
   connection.query('call CLINIC.list_doctors_assigned_to_patient(?)', [PatientID], function(err, rows){
   if(err)console.log(err);
-  DoctorID = rows[0][0].DoctorID;    
+  DoctorID = rows[0][0].DoctorID;
   console.log(DoctorID);
   });
 
@@ -290,6 +236,19 @@ app.get('/PatPrescription', function(req, res) {
   });
 });
 
+/*******************************************
+Doctor Appointment Statistics
+********************************************/
+app.get('/DoctorStats', function(req, res) {
+    console.log('These are the Doctor Stats');
+  // Get sent data.
+  connection.query('call CLINIC.list_all_doctors()', [], function(err, rows){
+  console.log(rows[0]);
+
+  res.json(rows[0]);
+
+  });
+});
 
 /*******************************************
  Patient Report Page List Doctor
@@ -298,8 +257,8 @@ app.get('/PatReportDoctor', function(req, res) {
     console.log('I have Patient Report Doctor');
   // Get sent data.
   connection.query('call CLINIC.list_doctors_assigned_to_patient(?)', [PatientID], function(err, rows){
-  console.log(rows[0]);  
-  
+  console.log(rows[0]);
+
   res.json(rows[0]);
 
   });
@@ -312,8 +271,8 @@ app.get('/PatReportDetails', function(req, res) {
     console.log('I have Patient Report Details');
   // Get sent data.
   connection.query('call CLINIC.patient_details_by_patientID(?)', [PatientID], function(err, rows){
-  console.log(rows[0]);  
-  
+  console.log(rows[0]);
+
   res.json(rows[0]);
 
   });
@@ -326,8 +285,8 @@ app.get('/PatReportTests', function(req, res) {
     console.log('I have Patient Report Tests');
   // Get sent data.
   connection.query('call CLINIC.list_tests_for_patient(?)', [PatientID], function(err, rows){
-  console.log(rows[0]);  
-  
+  console.log(rows[0]);
+
   res.json(rows[0]);
 
   });
@@ -336,7 +295,7 @@ app.get('/PatReportTests', function(req, res) {
 
 
 /*******************************************
- Patient Appointment setup 
+ Patient Appointment setup
 *******************************************/
 
 
@@ -394,7 +353,7 @@ app.post('/Signup', function(req, res) {
 
 
 /*******************************************
- Doctor based on DoctorType 
+ Doctor based on DoctorType
 ********************************************/
 app.post('/getDoctor', function(req, res) {
   var DoctorType = req.param('DoctorType');
@@ -407,7 +366,7 @@ app.post('/getDoctor', function(req, res) {
 });
 
 /*******************************************
- Future appointments on Patient side 
+ Future appointments on Patient side
 ********************************************/
 
 app.get('/futureAppointment',function(req,res){
@@ -419,7 +378,7 @@ app.get('/futureAppointment',function(req,res){
     for(var i=0 ; i<rows[0].length; i++){
       row.push(rows[0][i]);
     }
-    
+
     res.json(row);
   });
 
@@ -427,14 +386,14 @@ app.get('/futureAppointment',function(req,res){
 });
 
 /*******************************************
- Future appointments on Doctor side 
+ Future appointments on Doctor side
 ********************************************/
 app.get('/docCalendar',function(req,res){
 
     connection.query('call CLINIC.future_appointment_by_patientID(?)',[DoctorID],function(err,rows){
     if(err)console.log(err);
     console.log(rows[0]);
-    
+
     res.json(rows[0]);
   });
 
@@ -492,7 +451,7 @@ app.post('/sysAdminLogin', function(req, res) {
   var password = req.param('password');
   // Do a MySQL query.
   console.log('My name is: ' + user + ' and my password is: ' + password);
-  
+
 //Determine if username and password exist as a combination in login table in database, This is working
 //Also determine type of user: 1 = Doctor; 2 = Patient; 3 = Admin; 0 = not in database
 var loginSuccessful = 0;
@@ -500,7 +459,7 @@ var userType = "does_not_exist";
 var userTypeInt = 0;
 connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, fields){ //Does username exist already
   loginSuccessful = rows[0][0].loginSuccess;
-  if (loginSuccessful === 1){ 
+  if (loginSuccessful === 1){
     console.log("login successful"); }
   else {
     console.log("login unsuccessful");
@@ -531,72 +490,4 @@ connection.query('CALL loginExists(?,?)', [user, password], function(err, rows, 
       });
     }
   });
-  }); 
-
-/**********************************************************
-      Doctor querying patient based on patient ID
-**********************************************************/
-
-app.post('/details',function(req,res){
-
-    PatientID = req.body.PatientID;
-    connection.query('call CLINIC.patient_details_by_patientID(?)',[PatientID],function(err,rows){
-
-    if(err)console.log(err);
-    res.send(rows[0]);
-
   });
-
-});
-
-/**********************************************************
-      Doctor setting patient diagnosis based on patient ID
-**********************************************************/
-
-app.post('/setPatientMedInfo',function(req,res){
-     
-    var newdiag=req.body.newDiag;
-    var newtreat=req.body.newtreat;
-     
-    var Drugname=req.body.newMedName;
-    var dose=req.body.Strength;
-    var numbPills=req.body.amount;
-    var frequency=req.body.Frequency;
-    var route=req.body.NewRoute;
-    var refills=req.body.refillsLeft;
-
-    var type=req.body.NewType;
-    var result=req.body.Result;
-     console.log(newdiag);
-    connection.query('call CLINIC.new_diagnosis(?,?,?,?) ',[DoctorID,PatientID,newdiag,newtreat],function(err,rows){
-         //newDiag -> (string) description of diagnosis
-         //newTreat -> (string) eg. sleep, chemo
-        if(err){console.log(err); res.status(500).json({message:" Internal Server Error"});}
-    });
-    connection.query('call CLINIC.new_prescription(?,?,?,?,?,?,?,?)',[Drugname,dose,numbPills,frequency,route,refills,PatientID,DoctorID],function(err,rows){
-        if(err){console.log(err); res.status(500).json({message:" Internal Server Error"});}
-     
-});
-    connection.query('call CLINIC.new_test(?,?,?,?)',[DoctorID,PatientID,type,result],function(err,rows){
-        //type -> blood test etc.
-        //result -> result of test
-        if(err){console.log(err); res.status(500).json({message:" Internal Server Error"});}
-         
-    });
-    res.status(200).json({message:"added information"});
-  });
-
-  /*******************************************
-Doctor Appointment Statistics
-********************************************/
-app.get('/DoctorStats', function(req, res) {
-    console.log('These are the Doctor Stats');
-  // Get sent data.
-  connection.query('call CLINIC.list_all_doctors()', [], function(err, rows){
-  console.log(rows[0]);
-
-  res.json(rows[0]);
-
-  });
-});
-

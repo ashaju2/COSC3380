@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Signup extends Component {
     constructor(){
         super();
-       this.state ={     
+       this.state ={
             firstname: '',
             lastname: '',
             middlename: '',
@@ -22,14 +22,14 @@ handleDropClick(event){
     doctorType: event.target.value,
   },function(){
     console.log(event.target.value);
-    fetch('/getDoctor', { 
+    fetch('/getDoctor', {
       method: 'POST',
       headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        doctorType: this.state.doctorType,      
+        doctorType: this.state.doctorType,
       })
     }).then(function(response) {
       return response.json()
@@ -37,7 +37,7 @@ handleDropClick(event){
         console.log("Yess, we got doctor");
         this.setState({doctor: responseJson});
         })
-  event.preventDefault(); 
+  event.preventDefault();
 });
 }
 
@@ -53,7 +53,7 @@ handleSubmit(e){
         dob: this.refs.dob.value,
         doctor: this.refs.doctor.value,
       },
-      fetch('/Signup', { 
+      fetch('/Signup', {
       method: 'POST',
       headers: {
       'Accept': 'application/json',
@@ -67,7 +67,7 @@ handleSubmit(e){
         phone: this.state.phone,
         homeaddress: this.state.homeaddress,
         dob: this.state.dob,
-        doctor: this.state.doctor,      
+        doctor: this.state.doctor,
       })
     }).then(function(response) {
       return response.json()
@@ -76,7 +76,7 @@ handleSubmit(e){
         replace('/Patient');
         }));
 
-    e.preventDefault(); 
+    e.preventDefault();
 
 }
 
@@ -84,61 +84,82 @@ selectDoctor(){
   return
 }
 
+
 render(){
     return (
+
       <div className="Signup">
-        <center><h3>Patient Sign Up</h3></center>
-        <center><form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-          <div className="form-group">  
+      <center><div className="panel panel-primary panel-resizable">
+	     <div className="panel-heading">
+		     <center><h3 className="panel-title">Patienet Sign Up</h3></center>
+
+        </div>
+        <div className="panel-body">
+         <center><form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+          <div className="form-group">
           <div className="inputcontainer">
-            <input className="input"
+            <input className="form-control"
               type="text"
               placeholder="First Name"
               ref="firstname"
             />
           </div>
+          </div>
+          <div className="form-group">
           <div className="inputcontainer">
-            <input className="input"
+            <input className="form-control"
               type="text"
               placeholder="Middle Name"
               ref="middlename"
             />
           </div>
+          </div>
+          <div className="form-group">
           <div className="inputcontainer">
-            <input className="input"
+            <input className="form-control"
               type="text"
               placeholder="Last Name"
               ref="lastname"
             />
           </div>
+          </div>
+          <div className="form-group">
           <div className="inputcontainer">
-            <input className="input"
+            <input className="form-control"
               type="text"
               placeholder="Social Security Number"
               ref="ssn"
             />
           </div>
+          </div>
+          <div className="form-group">
           <div className="inputcontainer">
-            <input className="input"
+            <input className="form-control"
               type="text"
               placeholder="Phone Number"
               ref="phone"
             />
           </div>
+          </div>
+          <div className="form-group">
           <div className="inputcontainer">
-            <input className="input"
+            <input className="form-control"
               type="text"
               placeholder="Home Address"
               ref="homeaddress"
             />
           </div>
+          </div>
+          <div className="form-group">
           <div className="inputcontainer">
-            <input className="input"
+            <input className="form-control"
               type="text"
               placeholder="Date of Birth"
               ref="dob"
             />
           </div>
+          </div>
+          <div className="form-group">
           <div className="dropdown">
             <button className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
             <span className="caret"></span></button>
@@ -146,22 +167,26 @@ render(){
               <li><a value="General Practitioner" onClick={this.handleDropClick.bind(this)} >General Practitioner</a></li>
             </ul>
           </div>
-          
+          </div>
+
           <div>
             {this.selectDoctor()}
           </div>
-          
-          
+
+
           <br></br>
           <br></br>
           <br></br>
+          <div>
           <input type="submit" className="btn btn-primary" value="Submit" />
           <br />
           </div>
         </form></center>
+        </div>
+      </div>
+      </center>
       </div>
     );
   }
 }
 export default Signup;
-

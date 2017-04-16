@@ -19,7 +19,7 @@ class PatientLogin extends Component {
           password: this.refs.password.value
         }
       }, function() {
-        fetch('/patientLogin', { 
+        fetch('/patientLogin', {
       method: 'POST',
       headers: {
       'Accept': 'application/json',
@@ -41,7 +41,7 @@ class PatientLogin extends Component {
       else if(responseJson === 2){
         console.log('Patient');
         toggle();
-        replace('/Patient');
+        push('/Patient');
         console.log(responseJson);
       }
       else if(responseJson === 3){
@@ -53,47 +53,53 @@ class PatientLogin extends Component {
         })
       });
     }
-    e.preventDefault(); 
+    e.preventDefault();
   }
 
   render() {
     return (
       <div className="PatientLogin">
-        <div className="container">
-            <div className="row">
-                <div className="col-sm-4">
-                    <h3>Login Page</h3>
-
-                      <form onSubmit={this.handleSubmit.bind(this)}>
-                        <input 
-                          type="text" 
-                          placeholder="UserName" 
-                          ref="username" 
-                        />
-                        <input 
-                          type="password" 
-                          placeholder="Password" 
-                          ref="password"
-                        />
-                        <input type="submit" value="Submit"/>
-                      </form>
-
-                </div>
-                <div className="col-sm-4">
-                    <h3>Manage your health care online</h3>
-                    <h4>Change your doctor</h4>
-                    <h4>Update your contatc Infomation</h4>
-                    <h4>Get health reminders</h4>
-                    <h4>Schedule appointments</h4>
-                    <h4>View service history</h4>
-                </div>
+        <center><div className="panel panel-primary panel-resizable">
+            <div className="panel-heading">
+              <h3 className="panel-title">Patient Login</h3>
             </div>
-        </div>
-
+            <div className="panel-body">
+                <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                <div className="form-group">
+                <div className="inputcontainer">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="UserName"
+                    ref="username"
+                  />
+                  </div>
+                  </div>
+                  <div className="form-group">
+                  <div className="inputcontainer">
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Password"
+                    ref="password"
+                  />
+                  </div>
+                  </div>
+                  <input type="submit" className="btn btn-primary" value="Submit"/>
+                </form>
+              </div>
+              <div>
+                  <h4>Manage your health care online</h4>
+                  <h4><small>Change your doctor</small></h4>
+                  <h4><small>Update your contatc Infomation</small></h4>
+                  <h4><small>Get health reminders</small></h4>
+                  <h4><small>Schedule appointments</small></h4>
+                  <h4><small>View service history</small></h4>
+              </div>
+            </div></center>
       </div>
     );
   }
 }
 
 export default PatientLogin;
-
