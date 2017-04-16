@@ -49,7 +49,6 @@ testDataIterator(){
                                   <td className="text-center">{ndata.DateOfTest}</td>
                                   <td className="text-center">{ndata.Type}</td>
                                   <td className="text-center">{ndata.Results}</td>
-                                  <td className="text-center">{ndata.Interpretation}</td>
                                 </tr>);
     console.log(iterator);
     return <tbody>{iterator}</tbody>;
@@ -154,7 +153,6 @@ testDataIterator(){
                       <th className="col-xs-3 text-center">Date</th>
                       <th className="col-xs-3 text-center">Test Type</th>
                       <th className="col-xs-3 text-center">Results</th>
-                      <th className="col-xs-3 text-center">Interpretation</th>
                     </tr>
                   </thead>
                     {this.testDataIterator()}

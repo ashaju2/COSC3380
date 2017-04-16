@@ -4,24 +4,17 @@ class Signup extends Component {
     constructor(){
         super();
        this.state ={
-            firstname: '',
-            lastname: '',
-            middlename: '',
-            ssn: '',
-            phone: '',
-            homeaddress: '',
-            dob: '',
+            dataImp:{},
             doctorType: null,
-            doctor: null,
+            objectOfDoctor: null,
+            DoctorID: null,
     }
   }
 
-handleDropClick(event){
-  console.log(event);
+handleRadioChange(event){
   this.setState({
     doctorType: event.target.value,
   },function(){
-    console.log(event.target.value);
     fetch('/getDoctor', {
       method: 'POST',
       headers: {
@@ -31,28 +24,35 @@ handleDropClick(event){
       body: JSON.stringify({
         doctorType: this.state.doctorType,
       })
-    }).then(function(response) {
-      return response.json()
-    }).then(function(responseJson){
+    }).then(response => response.json())
+        .then((responseJson) => {
         console.log("Yess, we got doctor");
-        this.setState({doctor: responseJson});
-        })
+        this.setState({objectOfDoctor: responseJson});
+         console.log(this.state.objectOfDoctor);
+     })
+    });
+   
   event.preventDefault();
-});
 }
 
 handleSubmit(e){
+    console.log("No");
       var replace = this.props.history.replace;
-      this.setState({
-        firstname: this.refs.firstname.value,
-        lastname: this.refs.lastname.value,
-        middlename: this.state.middlename.value,
-        ssn: this.refs.ssn.value,
-        phone: this.refs.phone.value,
-        homeaddress: this.refs.homeaddress.value,
-        dob: this.refs.dob.value,
-        doctor: this.refs.doctor.value,
-      },
+      console.log(this.refs.firstname.value);
+      this.setState({ 
+        dataImp: {
+          firstname: this.refs.firstname.value,
+          lastname: this.refs.lastname.value,
+          middlename: this.refs.middlename.value,
+          ssn: this.refs.ssn.value,
+          phone: this.refs.phone.value,
+          homeaddress: this.refs.homeaddress.value,
+          dob: this.refs.dob.value,
+          gender: this.refs.gender.value,
+          username: this.refs.username.value,
+          password: this.refs.password.value,
+          }
+    }, function(){
       fetch('/Signup', {
       method: 'POST',
       headers: {
@@ -60,28 +60,41 @@ handleSubmit(e){
       'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        firstname: this.state.firstname,
-        lastname: this.state.lastname,
-        middlename: this.state.middlename,
-        ssn: this.state.ssn,
-        phone: this.state.phone,
-        homeaddress: this.state.homeaddress,
-        dob: this.state.dob,
-        doctor: this.state.doctor,
+        firstname: this.state.dataImp.firstname,
+        lastname: this.state.dataImp.lastname,
+        middlename: this.state.dataImp.middlename,
+        ssn: this.state.dataImp.ssn,
+        phone: this.state.dataImp.phone,
+        homeaddress: this.state.dataImp.homeaddress,
+        dob: this.state.dataImp.dob,
+        DoctorID: this.state.dataImp.DoctorID,
+        gender: this.state.dataImp.gender,
+        username: this.state.dataImp.username,
+        password: this.state.dataImp.password,
       })
-    }).then(function(response) {
-      return response.json()
-    }).then(function(responseJson){
+    }).then(response => response.json())
+        .then((responseJson) => {
         console.log("Yess, signup is complete");
-        replace('/Patient');
-        }));
+//        replace('/Patient');
+        })
+      });
 
     e.preventDefault();
 
 }
 
+handleNewRadioChange(e){
+  this.setState({ DoctorID: e.target.value });
+}
+
 selectDoctor(){
-  return
+  let data = this.state.objectOfDoctor;
+      if (!data) {
+        return null
+      }
+      let iterator = data.map((ndata) => <div key={ndata.DoctorID}><input type="radio" name="options" selected={this.state.DoctorID == ndata.DoctorID} value={ndata.DoctorID} onChange={this.handleNewRadioChange.bind(this)}/>{ndata.Lname}, {ndata.Fname}</div>);
+      console.log(iterator);
+      return <h3>{iterator}</h3>
 }
 
 
@@ -159,13 +172,41 @@ render(){
             />
           </div>
           </div>
+
           <div className="form-group">
-          <div className="dropdown">
-            <button className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-            <span className="caret"></span></button>
-            <ul className="dropdown-menu">
-              <li><a value="General Practitioner" onClick={this.handleDropClick.bind(this)} >General Practitioner</a></li>
-            </ul>
+          <div className="inputcontainer">
+            <input className="form-control"
+              type="text"
+              placeholder="Gender Format: M/F"
+              ref="gender"
+            />
+            </div>
+            </div>
+          <div className="form-group">
+          <div className="inputcontainer">
+            <input className="form-control"
+              type="text"
+              placeholder="Username"
+              ref="username"
+            />
+            </div>
+            </div>
+          <div className="form-group">
+          <div className="inputcontainer">
+            <input className="form-control"
+              type="password"
+              placeholder="Password"
+              ref="password"
+            />
+            </div>
+            </div>
+
+          <div className="form-group">
+          <div className="radio">
+          <div><input type="radio" name="options"  value="Cardiologist" onChange={this.handleRadioChange.bind(this)}/>Cardiologist</div>  
+          <div><input type="radio" name="options"  value="surgeon" onChange={this.handleRadioChange.bind(this)}/>Surgeon</div>  
+          <div><input type="radio" name="options"  value="Oncologist" onChange={this.handleRadioChange.bind(this)}/>Oncologist</div>  
+          <div><input type="radio" name="options"  value="General Practitioner" onChange={this.handleRadioChange.bind(this)}/>General Practitioner</div>  
           </div>
           </div>
 

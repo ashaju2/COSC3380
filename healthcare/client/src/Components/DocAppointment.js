@@ -84,6 +84,24 @@ if (event.target.value.length !== 3) {
    }
 }
 
+showPatDetails(){
+      let data = this.state.PatientID;
+      if (!data) {
+        return null
+      }
+      let iterator = data.map((ndata) => <tr key={ndata.PatientID}>
+                                  <tr className="text-left">{ndata.Lname}, {ndata.Fname} {ndata.Minit}</tr>
+                                  <tr className="text-left">{ndata.Address}</tr>
+                                  <tr className="text-left">{ndata.Allergies}</tr>
+                                  <tr className="text-left">{ndata.Conditions}</tr>
+                                  <tr className="text-left">{ndata.HealthInsurance}</tr>
+                                  <tr className="text-left">{ndata.DateOfBirth}</tr>
+                                  
+                                </tr>);
+    console.log(iterator);
+    return <tbody>{iterator}</tbody>;
+}
+
   render() {
     return (
       <div className="DocAppointment">
@@ -92,6 +110,11 @@ if (event.target.value.length !== 3) {
           <div className="form-group">
             <label htmlFor="usr">PatientID:</label>
             <input type="text" className="form-control"  onChange={this.handleChange.bind(this)}/>
+          </div>
+          <div>
+            <table className="table table-bordered table-striped table-hover table-bordered">
+                          {this.showPatDetails()}
+            </table>
           </div>
         </div>
         <div className="col-sm-5">

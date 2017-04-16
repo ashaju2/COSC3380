@@ -374,16 +374,23 @@ app.post('/Signup', function(req, res) {
   var phone = req.param('phone');
   var homeaddress = req.param('homeaddress');
   var dob = req.param('dob');
-  var doctor = req.param('doctor');
+  var DoctorID = req.param('DoctorID');
+  var gender = req.param('gender');
+  var username = req.param('username');
+  var password = req.param('password');
+  
   // Do a MySQL query.
+  console.log(username);
+  console.log(lastname);
+  console.log(password);
 
-  connection.query('call new_appointment_existingPatient( ? , ? , ? , ? );',
-  [date, reason, puser, apptTimeSlot],function(err, results){
+  connection.query('call new_signup(?,?,?,?,?,?,?,?,?,?,?);',
+  [firstname, middlename, lastname, homeaddress, ssn, dob, gender, phone, username, password, DoctorID],function(err, results){
   if(err) {
     return console.log(err);
   }
   else{
-    console.log("Appointment Added.")
+    console.log("Patient Added.")
   res.json(1);
   }
 });
@@ -396,11 +403,11 @@ app.post('/Signup', function(req, res) {
  Doctor based on DoctorType 
 ********************************************/
 app.post('/getDoctor', function(req, res) {
-  var DoctorType = req.param('DoctorType');
+  var doctorType = req.param('doctorType');
 
-  connection.query('call CLINIC.list_doctors_by_specialty(?)', [DoctorType], function(err, rows){
+  connection.query('call CLINIC.list_doctors_by_specialty(?)', [doctorType], function(err, rows){
     if(err)console.log(err);
-    console.log(rows);
+    console.log(rows[0]);
     res.json(rows[0]);
   });
 });

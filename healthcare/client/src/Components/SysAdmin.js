@@ -23,16 +23,6 @@ class SysAdmin extends Component {
             <br/>
             <div className="row">
               <div className="col-md-4">
-                <Link to='/AddDoctors'>
-                <div className="thumbnail">
-                    <img src={AddDoctorsImg} alt="Nature" />
-                    <div className="caption">
-                      <p>Add Doctors</p>
-                    </div>
-                </div>
-                </Link>    
-              </div>
-              <div className="col-md-4">
                 <Link to='/SysAdminReports'>
                 <div className="thumbnail">
                     <img src={reportsImg} alt="Fjords"/>
