@@ -5,25 +5,14 @@ class DocAppointment extends Component {
     super(props)
     this.state = {
       PatientID: '',
-      newdiag: '',
-      newtreat: '',
-    
-      Drugname: '',
-      dose: '',
-      numbPills: '',
-      frequency: '',
-      route: '',
-      refills: '',
-
-      type: '',
-      result: '',
+      datatest: {},
 
     }
   }
 
   handleSubmit(e){
-    console.log(this.refs.newtreat.value);
     this.setState({
+      datatest:{
         newdiag: this.refs.newdiag.value,
         newtreat: this.refs.newtreat.value,
      
@@ -37,7 +26,8 @@ class DocAppointment extends Component {
         type: this.refs.type.value,
         result: this.refs.result.value,
 
-    })
+    }
+  }, function(){
      fetch('/setPatientMedInfo', { 
       method: 'POST',
       headers: {
@@ -45,25 +35,26 @@ class DocAppointment extends Component {
       'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        newdiag: this.state.newdiag,
-        newtreat: this.state.newtreat,
+        newdiag: this.state.datatest.newdiag,
+        newtreat: this.state.datatest.newtreat,
      
-        Drugname: this.state.Drugname,
-        dose: this.state.dose,
-        numbPills: this.state.numbPills,
-        frequency: this.state.frequency,
-        route: this.state.route,
-        refills: this.state.refills,
+        Drugname: this.state.datatest.Drugname,
+        dose: this.state.datatest.dose,
+        numbPills: this.state.datatest.numbPills,
+        frequency: this.state.datatest.frequency,
+        route: this.state.datatest.route,
+        refills: this.state.datatest.refills,
 
-        type: this.state.type,
-        result: this.state.result,
+        type: this.state.datatest.type,
+        result: this.state.datatest.result,
 
       })
     }).then(response => response.json())
         .then((responseJson) => {
-        console.log(this.state.responseJson);
+        console.log(this.state.datatest.type);
         console.log("It worked!!")
     });
+  });
     e.preventDefault(); 
   }
 
@@ -107,43 +98,44 @@ if (event.target.value.length !== 3) {
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <label htmlFor="diagnosis">Add description of diagnosis:</label>
-            <input type="text" ref="newdiag" className="form-control" id="newdiag"/>
+            <input 
+            type="text" ref="newdiag" className="form-control" />
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add treatment for patient:</label>
-            <input type="text" ref="newtreat" className="form-control" id="newtreat"/>
+            <input type="text" ref="newtreat" className="form-control" />
           </div>
           <div className="form-group">
             <label htmlFor="test">Add Drug name for patient</label>
-            <input type="text" ref="Drugname" className="form-control" id="Drugname"/>
+            <input type="text" ref="Drugname" className="form-control" />
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add amount of dose for drug for patients:</label>
-            <input type="text" ref="dose" className="form-control" id="dose"/>
+            <input type="text" ref="dose" className="form-control" />
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add Number of pills for patients:</label>
-            <input type="text" ref="numbPills" className="form-control" id="numbPills"/>
+            <input type="text" ref="numbPills" className="form-control"/>
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add frequency for pills for patients:</label>
-            <input type="text" ref="frequency" className="form-control" id="frequency"/>
+            <input type="text" ref="frequency" className="form-control" />
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add route for patients:</label>
-            <input type="text" ref="route" className="form-control" id="route"/>
+            <input type="text" ref="route" className="form-control" />
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add refills for patients:</label>
-            <input type="text" ref="refills" className="form-control" id="refills"/>
+            <input type="text" ref="refills" className="form-control"/>
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add Type of test for patients:</label>
-            <input type="text" ref="type" className="form-control" id="type"/>
+            <input type="text" ref="type" className="form-control"/>
           </div>
           <div className="form-group">
             <label htmlFor="diagnosis">Add result of test for patients:</label>
-            <input type="text" ref="result" className="form-control" id="result"/>
+            <input type="text" ref="result" className="form-control"/>
           </div>
           <br></br>
           <button type="submit" className="btn btn-default">Submit</button>

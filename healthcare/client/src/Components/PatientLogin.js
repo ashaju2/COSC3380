@@ -12,7 +12,8 @@ class PatientLogin extends Component {
     var push = this.props.history.push;
     var replace = this.props.history.replace;
     var toggle = this.props.patientToggleLogin;
-
+    var logMessage = this.setState({loginMessage: 'Wrong user name or password!'});
+    
     if(this.refs.username.value){
       this.setState({login: {
           username: this.refs.username.value,
@@ -48,6 +49,9 @@ class PatientLogin extends Component {
         console.log('SysAdmin');
         //push('/SysAdmin');
         console.log(responseJson);
+      }
+      else{
+        logMessage;
       }
 
         })
@@ -85,6 +89,9 @@ class PatientLogin extends Component {
                   />
                   </div>
                   </div>
+                                  <center><h5><div className="alert alert-danger">
+                  <strong>{this.state.loginMessage}</strong></div></h5></center>
+
                   <input type="submit" className="btn btn-primary" value="Submit"/>
                 </form>
               </div>

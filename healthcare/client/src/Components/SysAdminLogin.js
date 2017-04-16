@@ -91,8 +91,6 @@ class SysAdminLogin extends Component {
                 />
                 </div>
                 </div>
-                <center><h5><div className="alert alert-danger">
-                  <strong>{this.state.loginMessage}</strong></div></h5></center>
                 <center><input type="submit" className="btn btn-primary" value="Submit"/></center>
               </form>
               </div>

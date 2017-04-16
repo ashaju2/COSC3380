@@ -8,21 +8,20 @@ var duser = '';
 var date = '';
 var PatientID = '';
 var DoctorID = '';
-const nodemailer = require('nodemailer');
-var smtpPool = require('nodemailer-smtp-pool');
-var CronJob = require('cron').CronJob;
+// const nodemailer = require('nodemailer');
+// var CronJob = require('cron').CronJob;
  
-// Create a SMTP transporter object
-let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: 'Healthcareautoresponse',
-        pass: 'grep1671'
-    },
+// // Create a SMTP transporter object
+// let transporter = nodemailer.createTransport({
+//     host: 'smtp.gmail.com',
+//     port: 465,
+//     secure: true,
+//     auth: {
+//         user: 'Healthcareautoresponse',
+//         pass: 'grep1671'
+//     },
     
-});
+// });
 
 
 app.set('port', (process.env.PORT || 3001));
@@ -52,42 +51,42 @@ connection.connect(function(err) {
   console.log('Connected to RDS!');
 });
 
-var job = new CronJob({
-  cronTime: '00 39 20 * * 1-7',
-  onTick: function() {
-    connection.query('call CLINIC.appointment_email_alert()',[],function(err,rows,fields){
-        if(err)console.log(err);
+// var job = new CronJob({
+//   cronTime: '00 39 20 * * 1-7',
+//   onTick: function() {
+//     connection.query('call CLINIC.appointment_email_alert()',[],function(err,rows,fields){
+//         if(err)console.log(err);
          
          
-        for(var i=0;i<rows[0].length;i++ )
-            var email=rows[0][i].email;
-            console.log(email);
+//         for(var i=0;i<rows[0].length;i++ )
+//             var email=rows[0][i].email;
+//             console.log(email);
          
          
          
-        let mailOptions = {
+//         let mailOptions = {
              
      
-    from: '"Clinic 👻" <Healthcareautoresponse@gmail.com>', // sender address
-    to: email, // list of receivers
-    subject: 'Appointment ✔', // Subject line
-    text: 'You have an appointment today', // plain text body
-    html: '<b>You have an appointment today /b>' // html body
-    };
+//     from: '"Clinic 👻" <Healthcareautoresponse@gmail.com>', // sender address
+//     to: email, // list of receivers
+//     subject: 'Appointment ✔', // Subject line
+//     text: 'You have an appointment today', // plain text body
+//     html: '<b>You have an appointment today /b>' // html body
+//     };
  
-// send mail with defined transport object
-transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        return console.log(error);
-    }
-    console.log('Message %s sent: %s', info.messageId, info.response);
-});
-    });
-  },
-  start: false,
-  timeZone: 'America/Chicago'
-});
-job.start();
+// // send mail with defined transport object
+// transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//         return console.log(error);
+//     }
+//     console.log('Message %s sent: %s', info.messageId, info.response);
+// });
+//     });
+//   },
+//   start: false,
+//   timeZone: 'America/Chicago'
+// });
+// job.start();
 
 
 
@@ -555,15 +554,15 @@ app.post('/details',function(req,res){
 
 app.post('/setPatientMedInfo',function(req,res){
      
-    var newdiag=req.body.newDiag;
-    var newtreat=req.body.newtreat;
+    var newdiag = req.param('newdiag');
+    var newtreat = req.param('newtreat');
      
-    var Drugname=req.body.newMedName;
-    var dose=req.body.Strength;
-    var numbPills=req.body.amount;
-    var frequency=req.body.Frequency;
-    var route=req.body.NewRoute;
-    var refills=req.body.refillsLeft;
+    var Drugname = req.param('Drugname');
+    var dose = req.param('dose');
+    var numbPills = req.param('numbPills');
+    var frequency = req.param('frequency');
+    var route=req.param('route');
+    var refills=req.param('refills');
 
     var type=req.body.NewType;
     var result=req.body.Result;
